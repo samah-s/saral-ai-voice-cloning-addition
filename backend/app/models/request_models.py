@@ -42,6 +42,9 @@ class AudioGenerationRequest(BaseModel):
     hinglish_iterations: int = 3
     show_hindi_debug: bool = False
     selected_language: str
+    use_voice_cloning: bool = False
+    playht_key: Optional[str] = None  # Add this
+    playht_user_id: Optional[str] = None  # Add this
 
 class VideoGenerationRequest(BaseModel):
     background_music_file: Optional[str] = None

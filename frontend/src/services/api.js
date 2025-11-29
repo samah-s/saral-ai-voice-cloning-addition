@@ -439,14 +439,89 @@ class SlidesService {
   }
 }
 
+// class MediaService {
+//   constructor(httpClient) {
+//     this.http = httpClient;
+//   }
+
+//   async generateAudio(paperId, config) {
+//     return this.http.post(`/media/${paperId}/generate-audio`, config);
+//   }
+
+  
+  
+
+//   async generateVideo(paperId, config) {
+//     return this.http.post(`/media/${paperId}/generate-video`, config);
+//   }
+
+//   async downloadVideo(paperId) {
+//     return this.http.get(`/media/${paperId}/download-video`, {
+//       responseType: 'blob'
+//     });
+//   }
+
+//   async downloadAudio(paperId, filename) {
+//     return this.http.get(`/media/${paperId}/download-audio/${filename}`, {
+//       responseType: 'blob'
+//     });
+//   }
+
+//   async getStatus(paperId) {
+//     try {
+//       return await this.http.get(`/media/${paperId}/status`);
+//     } catch (error) {
+//       if (error.response?.status === 404) {
+//         // Return a default structure for media that doesn't exist yet
+//         return { 
+//           data: { 
+//             audio_files: [], 
+//             video_path: null, 
+//             paper_id: paperId 
+//           } 
+//         };
+//       }
+//       throw error;
+//     }
+//   }
+
+//   getAudioStreamUrl(paperId, filename) {
+//     return `${API_CONFIG.baseURL}/api/media/${paperId}/stream-audio/${filename}`;
+//   }
+
+//   getVideoStreamUrl(paperId) {
+//     return `${API_CONFIG.baseURL}/api/media/${paperId}/stream-video`;
+//   }
+
+
+// }
+
+// Add this method to the MediaService class in your existing api.js
+
 class MediaService {
   constructor(httpClient) {
     this.http = httpClient;
   }
 
-  async generateAudio(paperId, config) {
-    return this.http.post(`/media/${paperId}/generate-audio`, config);
+  async uploadVoiceSample(paperId, audioFile) {
+    const formData = new FormData();
+    formData.append('voice_sample', audioFile);
+    
+    return this.http.post(`/media/${paperId}/upload-voice-sample`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
   }
+
+  // async generateAudio(paperId, config) {
+  //   return this.http.post(`/media/${paperId}/generate-audio`, config);
+  // }
+
+  async generateAudio(paperId, config) {
+  return this.http.post(`/media/${paperId}/generate-audio`, config, {
+    timeout: 30 * 60 * 1000 // 30 minutes
+  });
+}
+
 
   async generateVideo(paperId, config) {
     return this.http.post(`/media/${paperId}/generate-video`, config);
@@ -469,7 +544,6 @@ class MediaService {
       return await this.http.get(`/media/${paperId}/status`);
     } catch (error) {
       if (error.response?.status === 404) {
-        // Return a default structure for media that doesn't exist yet
         return { 
           data: { 
             audio_files: [], 
@@ -490,6 +564,11 @@ class MediaService {
     return `${API_CONFIG.baseURL}/api/media/${paperId}/stream-video`;
   }
 }
+
+// Add this to the ApiService class legacy compatibility methods section:
+// uploadVoiceSample = (paperId, file) => this.media.uploadVoiceSample(paperId, file);
+
+
 
 /**
  * Main API Service Factory
@@ -533,6 +612,7 @@ class ApiService {
   }
 
   // Legacy compatibility methods
+  uploadVoiceSample = (paperId, file) => this.media.uploadVoiceSample(paperId, file);
   setupApiKeys = (keys) => this.apiKeys.setup(keys);
   getApiKeysStatus = () => this.apiKeys.getStatus();
   
