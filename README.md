@@ -1,6 +1,17 @@
 # SARAL AI  
 **Simplified And Automated Research Amplification and Learning**
 
+
+
+> **Important Note on Ownership**  
+> This repository is **not the original SARAL AI project**.  
+> SARAL AI is an open-source research dissemination system developed and maintained by its original authors under the **DemocratiseResearch** initiative.  
+>  
+> This repository documents the **original SARAL AI system** along with an **additional feature contribution** (author voice cloning) implemented as an extension to the existing codebase.  
+> **All core ownership, credit, and intellectual responsibility for SARAL AI remain with its original creators.**
+
+---
+
 SARAL AI is a full-stack application that automates the process of converting research papers (LaTeX or arXiv) into professional educational videos. The system leverages AI for script generation, slide creation, audio narration, and video synthesis, enabling seamless research dissemination from paper upload to downloadable media.
 
 This repository documents SARAL AI along with an **additional voice cloning feature** integrated into the existing audio narration pipeline.
