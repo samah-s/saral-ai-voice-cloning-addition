@@ -112,11 +112,11 @@ def clean_text(text):
 def generate_full_script_with_gemini(api_key, input_text):
     """Generate presentation script using Gemini API with improved prompts from app_1.py"""
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-2.0-flash')
+    model = genai.GenerativeModel('gemini-3-flash-preview')
     
     # Enhanced prompt based on app_1.py
     prompt = f"""
-Create a script for a 3-5 minute educational video based on this research paper.
+Create a script for a 3-5 minute educational video based on this research paper. The script must be in first person narrative such that the author is the speaking. Assume you are the author.
 STRUCTURE:
 Create scripts for exactly these 5 sections:
 **Introduction**
@@ -132,6 +132,7 @@ Important rules:
 5. Make it engaging for a general audience
 6. DO NOT include any video/animation directions or [Narrator:] tags
 7. Make sure that you do not use contracted words, for example: we'll, we're.
+8. Begin with your name.
 Here’s the paper text to base the script on:
 Research Paper Content:
 {input_text}
@@ -149,7 +150,7 @@ Please generate the complete presentation script with clear section headers:
 def generate_bullet_points_with_gemini(api_key, section_text):
     """Generate bullet points for a section using improved prompts."""
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-2.0-flash')
+    model = genai.GenerativeModel('gemini-3-flash-preview')
     
     prompt = f"""
 Convert this presentation script into 3-5 clear, concise bullet points for a slide.
@@ -209,7 +210,7 @@ Generate exactly 3-5 bullet points in this format:
 def generate_all_bullet_points_with_gemini(api_key, sections_scripts):
     """Generate bullet points for all sections using a single prompt."""
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-2.0-flash')
+    model = genai.GenerativeModel('gemini-3-flash-preview')
     
     print(f"Generating bullet points for {len(sections_scripts)} sections using single prompt")
     
@@ -448,7 +449,5 @@ def generate_title_introduction(title, authors, date):
         authors = f"{first_author} et al."
     return f"""
 Welcome to this presentation on "{title}".
-This research was conducted by {authors} and published in {date}.
-Today, we'll explore the key findings and contributions of this important work.
-Let's begin by understanding the problem this research addresses.
+This research was published in {date}.
 """

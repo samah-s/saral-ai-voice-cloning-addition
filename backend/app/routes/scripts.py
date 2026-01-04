@@ -81,7 +81,11 @@ def get_or_load_scripts(paper_id: str) -> Dict:
     return scripts_storage[paper_id]
 
 @router.post("/{paper_id}/generate", response_model=ScriptResponse)
-async def generate_script(paper_id: str, api_keys: dict = Depends(get_api_keys)):
+async def generate_script(
+    paper_id: str,
+    current_user: dict = Depends(get_current_user),  # ✅ ADD THIS
+    api_keys: dict = Depends(get_api_keys),
+):
     """Generate presentation script from paper with bullet points."""
     paper_id_str = str(paper_id)  # Ensure we're using a string for comparison
     
