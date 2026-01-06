@@ -454,13 +454,16 @@ async def generate_audio(
                 }
 
             # Use voice cloning service (Coqui TTS - no API key needed)
+            # audio_response = ensure_voice_cloned_audio_is_generated(
             audio_response = ensure_voice_cloned_audio_is_generated(
-                openai_api_key=None,  # Not needed for Coqui
-                paper_id=paper_id,
-                title_intro_script=title_intro_script,
-                sections_scripts=sections_scripts,
-                voice_sample_path=voice_samples_storage[paper_id]
-            )
+    openai_api_key=None,
+    paper_id=paper_id,
+    title_intro_script=title_intro_script,
+    sections_scripts=sections_scripts,
+    voice_sample_path=voice_samples_storage[paper_id],
+    selected_language=request.selected_language   # ✅ ADD THIS
+)
+
 
             audio_files = audio_response["audio_files"]
             if paper_id not in media_storage:

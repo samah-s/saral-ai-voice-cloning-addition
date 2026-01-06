@@ -11,6 +11,12 @@ import json
 import torch
 from TTS.api import TTS
 
+LANGUAGE_MAP = {
+    "English": "en",
+    "Hindi": "hi"
+}
+
+
 def clean_script_for_tts(script_text):
     """Clean script text for TTS processing."""
     if not script_text or not script_text.strip():
@@ -19,7 +25,14 @@ def clean_script_for_tts(script_text):
     script_text = re.sub(r'\*\*([^*]+)\*\*', r'\1', script_text)
     script_text = re.sub(r'\*([^*]+)\*', r'\1', script_text)
     script_text = re.sub(r'#+\s*', '', script_text)
-    script_text = re.sub(r'[^\w\s.,!?;:\-()"\']', ' ', script_text)
+    # script_text = re.sub(r'[^\w\s.,!?;:\-()"\']', ' ', script_text)
+    # Allow Devanagari Unicode block explicitly
+    script_text = re.sub(
+    r'[^\w\s\u0900-\u097F.,!?;:\-()"\']',
+    ' ',
+    script_text
+)
+
     script_text = re.sub(r'\s+', ' ', script_text)
 
     return script_text.strip()
@@ -202,8 +215,16 @@ def ensure_voice_cloned_audio_is_generated(
     title_intro_script: str,
     sections_scripts: Dict[str, str],
     voice_sample_path: str,
-    voice: str = "alloy"  # Kept for compatibility but not used
+    selected_language: str = "English",
+    voice: str = "alloy"
 ) -> Dict[str, List[str]]:
+    
+    lang_code = LANGUAGE_MAP.get(selected_language, "en")
+    print("DEBUG selected_language received:", selected_language)
+    print(f"🗣️ XTTS language set to: {lang_code}")
+
+
+
     """
     Generate audio files using Coqui TTS voice cloning.
     
@@ -254,7 +275,7 @@ def ensure_voice_cloned_audio_is_generated(
                     text=cleaned_text,
                     output_path=title_audio_path,
                     speaker_wav=voice_sample_path,
-                    language="en"
+                    language=lang_code
                 )
                 
                 if success:
@@ -281,7 +302,7 @@ def ensure_voice_cloned_audio_is_generated(
                         text=cleaned_text,
                         output_path=audio_path,
                         speaker_wav=voice_sample_path,
-                        language="en"
+                        language=lang_code
                     )
                     
                     if success:

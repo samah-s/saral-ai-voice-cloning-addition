@@ -42,7 +42,7 @@ def _translate_text(text, api_key):
             source_language_code="en-IN",
             target_language_code="hi-IN",
             model="mayura:v1",
-            mode="code-mixed"
+            mode="formal"
         )
         return response.translated_text
     except Exception as e:
