@@ -439,64 +439,7 @@ class SlidesService {
   }
 }
 
-// class MediaService {
-//   constructor(httpClient) {
-//     this.http = httpClient;
-//   }
 
-//   async generateAudio(paperId, config) {
-//     return this.http.post(`/media/${paperId}/generate-audio`, config);
-//   }
-
-  
-  
-
-//   async generateVideo(paperId, config) {
-//     return this.http.post(`/media/${paperId}/generate-video`, config);
-//   }
-
-//   async downloadVideo(paperId) {
-//     return this.http.get(`/media/${paperId}/download-video`, {
-//       responseType: 'blob'
-//     });
-//   }
-
-//   async downloadAudio(paperId, filename) {
-//     return this.http.get(`/media/${paperId}/download-audio/${filename}`, {
-//       responseType: 'blob'
-//     });
-//   }
-
-//   async getStatus(paperId) {
-//     try {
-//       return await this.http.get(`/media/${paperId}/status`);
-//     } catch (error) {
-//       if (error.response?.status === 404) {
-//         // Return a default structure for media that doesn't exist yet
-//         return { 
-//           data: { 
-//             audio_files: [], 
-//             video_path: null, 
-//             paper_id: paperId 
-//           } 
-//         };
-//       }
-//       throw error;
-//     }
-//   }
-
-//   getAudioStreamUrl(paperId, filename) {
-//     return `${API_CONFIG.baseURL}/api/media/${paperId}/stream-audio/${filename}`;
-//   }
-
-//   getVideoStreamUrl(paperId) {
-//     return `${API_CONFIG.baseURL}/api/media/${paperId}/stream-video`;
-//   }
-
-
-// }
-
-// Add this method to the MediaService class in your existing api.js
 
 class MediaService {
   constructor(httpClient) {
@@ -512,13 +455,10 @@ class MediaService {
     });
   }
 
-  // async generateAudio(paperId, config) {
-  //   return this.http.post(`/media/${paperId}/generate-audio`, config);
-  // }
 
   async generateAudio(paperId, config) {
   return this.http.post(`/media/${paperId}/generate-audio`, config, {
-    timeout: 30 * 60 * 1000 // 30 minutes
+    timeout: 50 * 60 * 1000 // 30 minutes
   });
 }
 
